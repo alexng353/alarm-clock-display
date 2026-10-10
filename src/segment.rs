@@ -30,6 +30,12 @@ impl core::ops::BitOr for SegmentMask {
     }
 }
 
+impl core::ops::BitOrAssign for SegmentMask {
+    fn bitor_assign(&mut self, rhs: Self) {
+        *self = Self(self.0 | rhs.0);
+    }
+}
+
 pub struct Segment<P: OutputPin> {
     on: bool,
     pin: P,

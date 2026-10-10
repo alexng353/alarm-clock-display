@@ -13,6 +13,7 @@ pub struct DisplayState {
     digits: [SegmentMask; 4],
     segment_pins: [Segment<DynamicPin>; 8],
     digit_pins: [Segment<DynamicPin>; 4],
+    colon: bool
 }
 
 fn show<P: OutputPin>(mask: SegmentMask, segments: &mut [Segment<P>]) -> Result<(), P::Error> {
@@ -35,6 +36,7 @@ impl DisplayState {
             // digits: [numbers::ONE, numbers::TWO, numbers::THREE, numbers::FOUR],
             segment_pins: segment_pins.map(Segment::new),
             digit_pins: digit_pins.map(Segment::new),
+            colon: false
         }
     }
 
@@ -47,14 +49,19 @@ impl DisplayState {
 
         self.digit = (self.digit + 1) % 4;
 
-        let new_digits = self.digits[self.digit as usize];
+        let mut new_digits = self.digits[self.digit as usize];
+
+        if self.digit == 1 && self.colon {
+            new_digits |= SegmentMask::DP;
+        }
 
         show(new_digits, &mut self.segment_pins).unwrap();
 
         (self.digit_pins[self.digit as usize]).set_on().unwrap();
     }
 
-    pub fn change_time(&mut self, new_digits: [u8; 4]) {
-        self.digits = new_digits.map(|x| NUMBERS[x as usize])
+    pub fn change_time(&mut self, new_digits: [u8; 4], colon: bool) {
+        self.colon = colon;
+        self.digits = new_digits.map(|x| NUMBERS[x as usize]);
     }
 }

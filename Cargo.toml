@@ -12,6 +12,9 @@ embedded-hal = "1.0"
 rp2040-boot2 = "0.3"
 rp2040-hal = { version = "0.12", features = ["rt", "critical-section-impl"] }
 
+usb-device = "0.3"
+usbd-serial = "0.2"
+
 [[bin]]
 name = "display"
 path = "src/main.rs"

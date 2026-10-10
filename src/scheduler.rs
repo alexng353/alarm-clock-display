@@ -30,7 +30,7 @@ impl Scheduler {
                 Schedule {
                     task: Task::ChangeTime,
                     deadline_us: now,
-                    interval_us: MicrosDurationU64::secs(1),
+                    interval_us: MicrosDurationU64::millis(100),
                 },
                 Schedule {
                     task: Task::GetTime,
